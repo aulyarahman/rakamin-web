@@ -1,15 +1,5 @@
-import React from "react";
+import React from 'react';
 
-/**
- * @description Container
- * @typedef {{
- *  children: React.ReactNode
- * }}
- * Props
- *
- * @type React.FunctionComponent<Props>
- */
-
-export const Container = (props) => {
-  return <div className="p-[24px] flex">{props.children}</div>;
+export const Containers = (props) => {
+  return <div className="p-[24px] grid grid-cols-4 gap-4 gap-4">{props.children}</div>;
 };
