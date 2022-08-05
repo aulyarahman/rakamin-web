@@ -1,21 +1,23 @@
 import React from 'react';
 import Button from './Button';
 import { IconAdd } from './Icon';
-import { useSelector } from 'react-redux';
-import useConfirmationModalManagement from '../hooks/useConfirmationModal.js';
+import { PropTypes } from 'prop-types';
 
-const Navbar = () => {
-  const { open } = useConfirmationModalManagement();
-
+const Navbar = ({ btnClick, labelButton = 'Add New Group' }) => {
   return (
     <div className="shadow-md p-5 flex h-[64px] gap-3">
       <p className="font-bold text-[18px]">Product Roadmap</p>
-      <Button onClick={() => open()}>
+      <Button onClick={btnClick}>
         <IconAdd />
-        Add New Group
+        {labelButton}
       </Button>
     </div>
   );
+};
+
+Navbar.PropTypes = {
+  btnClick: PropTypes.func,
+  labelButton: PropTypes.string
 };
 
 export default Navbar;
