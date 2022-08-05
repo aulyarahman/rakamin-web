@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { PropTypes } from 'prop-types';
+import { IconLoading } from './Icon';
 
 export const Button = (props) => {
   const css =
@@ -13,17 +14,29 @@ export const Button = (props) => {
   );
 };
 
-export const Buttons = ({ type = 'button', children, className, onClick, variant = 'filled' }) => (
+export const Buttons = ({
+  type = 'button',
+  children,
+  className,
+  onClick,
+  variant = 'filled',
+  isLoading = false
+}) => (
   <button
     type={type}
     onClick={onClick}
     className={clsx(
-      'text-[14px] hover:text-white border border-primary focus:ring-4 focus:outline-none',
-      'font-medium rounded-[5px] text-center px-[8px] py-[2px]',
-      'w-[97px] h-[32px]',
-      `${variant === 'filled' ? 'text-white bg-primary' : 'text-black'}`,
+      'inline-flex text-[14px] hover:bg-gray-200 border-[1.5px] focus:ring-4 focus:outline-none',
+      'font-medium rounded-[8px] text-center px-[8px] py-[2px]',
+      'min-w-[97px] h-[32px] place-items-center',
+      `${
+        variant === 'filled'
+          ? 'text-white bg-primary hover:text-black border-none'
+          : 'text-black border-neutral-40'
+      }`,
       className
     )}>
+    {isLoading && <IconLoading />}
     {children}
   </button>
 );
@@ -36,9 +49,10 @@ Button.propTypes = {
   variant: PropTypes.string
 };
 
-export const ButtonClose = () => (
+export const ButtonClose = ({ onClick }) => (
   <button
     type="button"
+    onClick={onClick}
     className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8"
     data-dismiss-target="#toast-success"
     aria-label="Close">

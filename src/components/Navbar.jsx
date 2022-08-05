@@ -8,12 +8,12 @@ const Navbar = ({ labelButton = 'Add New Group' }) => {
   return (
     <div className="shadow-md p-5 flex h-[64px] gap-3">
       <p className="font-bold text-[18px]">Product Roadmap</p>
-      <Link to={'/todos/add'}>
-        <Button>
-          <IconAdd />
-          {labelButton}
-        </Button>
-      </Link>
+      {/*<Link to={'/todos/add'}>*/}
+      {/*  <Button>*/}
+      {/*    <IconAdd />*/}
+      {/*    {labelButton}*/}
+      {/*  </Button>*/}
+      {/*</Link>*/}
     </div>
   );
 };
