@@ -6,7 +6,7 @@ import {
 
 function useConfirmationModalManagement() {
   const dispatch = useDispatch();
-  const { isOpened } = useSelector((state) => ({
+  const { isOpened, type } = useSelector((state) => ({
     isOpened: state.modal.isOpened
   }));
 
@@ -27,7 +27,8 @@ function useConfirmationModalManagement() {
     isOpened,
     open,
     confirm,
-    decline
+    decline,
+    type
   };
 }
 
