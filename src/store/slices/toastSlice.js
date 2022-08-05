@@ -12,7 +12,7 @@ export const initialState = {
 export const toastThunkActions = {
   open: createAsyncThunk('toast', async (_, thunkAPI) => {
     const store = thunkAPI.extra?.store;
-    thunkAPI.dispatch(useConfirmationToastManagement.open());
+    thunkAPI.dispatch(confirmationToastActions.open());
     return new Promise((resolve, reject) => {
       const unsubscribe = store.subscribe(() => {
         const state = thunkAPI.getState();
@@ -51,7 +51,8 @@ const confirmationToastSlice = createSlice({
     },
     setStatus: (state, action) => {
       state.status = action.payload.status;
-      state.messages = action.payload.messages;
+      state.message = action.payload.message;
+      state.isOpened = action.payload.isOpened;
     }
   }
 });
