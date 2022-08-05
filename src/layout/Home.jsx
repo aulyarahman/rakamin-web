@@ -12,7 +12,12 @@ const Loading = () => (
 
 const ItemsCard = (props) => {
   const { id } = props;
-  const { data, loading } = useTodo(`/todos/${id}/items`);
+  const navigate = useNavigate();
+  const { data, loading, deleteTodos } = useTodo(`/todos/${id}/items`);
+
+  const handleDelete = (idItems) => {
+    return deleteTodos(`/todos/${id}/items/${idItems}`);
+  };
 
   if (loading) return <Loading />;
 
@@ -26,7 +31,17 @@ const ItemsCard = (props) => {
             className={'bg-neutral border-[1px] rounded-[4px] p-3 space-y-3 cursor-pointer'}>
             <p className={'font-bold text-[14px]'}>{i.name}</p>
             <div className="w-full border-[1px] border-dashed border-[#E0E0E0]" />
-            <ProgressBar progress={percent} href={`/items/add/${id}`} />
+            <ProgressBar
+              progress={percent}
+              href={`/items/add/${id}`}
+              onClick={(k) => {
+                if (k === 2) {
+                  localStorage.setItem('items', JSON.stringify(i));
+                  navigate(`/todos/${id}/items/${i.id}`);
+                }
+                if (k === 3) handleDelete(i.id);
+              }}
+            />
           </div>
         );
       })}

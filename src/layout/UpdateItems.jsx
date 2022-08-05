@@ -1,14 +1,24 @@
 import { FormInput } from '../components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import WrapForm from './WrapForm';
 import { useTodo } from '../services/useTodo';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ModalContent } from '../components/ActionSlide/ModalContent';
 
-const CreateItems = () => {
-  const { id } = useParams();
+const UpdateItems = () => {
+  const { idTodos, idItems } = useParams();
   const [data, setData] = useState({ name: '', progress_percentage: '' });
-  const { create, isLoading } = useTodo(`/todos/${id}/items`);
+  const { update, isLoading } = useTodo(`/todos/${idTodos}/items/${idItems}`);
+
+  useEffect(() => {
+    const data = localStorage.getItem('items');
+    const toJSON = JSON.parse(String(data));
+    setData({
+      name: toJSON.name,
+      target_todo_id: toJSON.todo_id,
+      progress_percentage: toJSON.progress_percentage
+    });
+  }, []);
 
   const handleChange = (e) => {
     setData((v) => ({ ...v, [e.target.name]: e.target.value }));
@@ -16,7 +26,7 @@ const CreateItems = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await create(data);
+    await update(data);
   };
 
   return (
@@ -25,12 +35,14 @@ const CreateItems = () => {
         <FormInput
           label={'Task Name'}
           id={'name'}
+          value={data.name}
           placeholder={'Type your Task'}
           onChange={handleChange}
         />
         <FormInput
           label={'Progress'}
           id={'progress_percentage'}
+          value={data.progress_percentage}
           placeholder={'70%'}
           onChange={handleChange}
         />
@@ -39,4 +51,4 @@ const CreateItems = () => {
   );
 };
 
-export default CreateItems;
+export default UpdateItems;

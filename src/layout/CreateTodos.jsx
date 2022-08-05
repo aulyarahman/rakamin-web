@@ -1,12 +1,11 @@
-import { Modal, FormInput } from '../components';
-import { PropTypes } from 'prop-types';
+import { FormInput } from '../components';
 import React, { useState } from 'react';
 import WrapForm from './WrapForm';
 import { useTodo } from '../services/useTodo';
 import { useNavigate } from 'react-router-dom';
+import { ModalContent } from '../components/ActionSlide/ModalContent';
 
-const CreateTodos = ({ isOpen, setIsOpen }) => {
-  const navigate = useNavigate();
+const CreateTodos = () => {
   const [data, setData] = useState({ title: '', description: '' });
   const { create, isLoading } = useTodo('/todos');
 
@@ -20,8 +19,8 @@ const CreateTodos = ({ isOpen, setIsOpen }) => {
   };
 
   return (
-    <Modal isOpen={true} setIsOpen={() => navigate('/', { replace: true })}>
-      <WrapForm cb={handleSubmit}>
+    <ModalContent title={'Create Task'} type={'page'}>
+      <WrapForm cb={handleSubmit} isLoading={isLoading}>
         <FormInput
           label={'Title'}
           id={'title'}
@@ -35,13 +34,8 @@ const CreateTodos = ({ isOpen, setIsOpen }) => {
           onChange={handleChange}
         />
       </WrapForm>
-    </Modal>
+    </ModalContent>
   );
-};
-
-CreateTodos.PropTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  setIsOpen: PropTypes.func.isRequired
 };
 
 export default CreateTodos;
