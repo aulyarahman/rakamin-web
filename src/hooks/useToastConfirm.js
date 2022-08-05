@@ -3,9 +3,7 @@ import { confirmationToastActions, toastThunkActions } from '../store/slices/toa
 
 function useConfirmationToastManagement() {
   const dispatch = useDispatch();
-  const { isOpened } = useSelector((state) => ({
-    isOpened: state.toast.isOpened
-  }));
+  const { isOpened, message, status } = useSelector((state) => state.toast);
 
   const open = async () => {
     const { payload } = await dispatch(toastThunkActions.open());
@@ -20,8 +18,8 @@ function useConfirmationToastManagement() {
     return dispatch(confirmationToastActions.failed());
   };
 
-  const status = (it) => {
-    return dispatch(confirmationToastActions.setStatus({ status: it }));
+  const setStatus = (status, message, isOpened) => {
+    return dispatch(confirmationToastActions.setStatus({ status, message, isOpened }));
   };
 
   return {
@@ -29,6 +27,8 @@ function useConfirmationToastManagement() {
     open,
     confirm,
     failed,
+    setStatus,
+    message,
     status
   };
 }
