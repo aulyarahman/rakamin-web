@@ -1,10 +1,9 @@
-export { default as ToastContainer } from './Toast';
-export * as Skeleton from './Skeleton';
-export { default as ProgressBar } from './ProgessBar';
+export * from './Skeleton';
+export * from './ProgessBar';
 export { default as Navbar } from './Navbar';
-export { default as Modal } from './Modal';
-export * from './Icon';
+export * from './Modal';
+export * as Icons from './Icon';
 export * from './FormInput';
-export * from './Containers';
+export * from './Container';
 export * from './Card';
 export * from './Button';

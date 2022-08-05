@@ -2,8 +2,9 @@ import { IconCheck, IconFiMore } from './Icon';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
-const ProgressBar = ({ progress, onClick }) => {
+export const ProgressBar = ({ progress, href }) => {
   return (
     <div className="flex gap-5 place-items-center">
       <div className={'flex w-full gap-2'}>
@@ -24,16 +25,16 @@ const ProgressBar = ({ progress, onClick }) => {
           </div>
         )}
       </div>
-      <button onClick={onClick}>
-        <IconFiMore />
-      </button>
+      <Link to={href}>
+        <button>
+          <IconFiMore />
+        </button>
+      </Link>
     </div>
   );
 };
 
-ProgressBar.PropTypes = {
+ProgressBar.propTypes = {
   progress: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired
+  href: PropTypes.string.isRequired
 };
-
-export default ProgressBar;
