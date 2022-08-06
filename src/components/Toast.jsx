@@ -1,5 +1,6 @@
 import useConfirmationToastManagement from '../hooks/useToastConfirm.js';
 import { useEffect } from 'react';
+import { IconLoading } from './Icon';
 
 const ErrorIcon = () => (
   <div className="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
@@ -56,11 +57,11 @@ const ToastContainer = () => {
   const { isOpened, status, message, setStatus } = useConfirmationToastManagement();
 
   useEffect(() => {
-    // if (isOpened && status !== 'pending') {
-    //   setTimeout(() => {
-    //     setStatus('', '', false);
-    //   }, 5000);
-    // }
+    if (isOpened && status !== 'pending') {
+      setTimeout(() => {
+        setStatus('', '', false);
+      }, 5000);
+    }
   }, [status]);
 
   const IconRender = () => (
@@ -70,7 +71,7 @@ const ToastContainer = () => {
       ) : status === 'error' ? (
         <ErrorIcon />
       ) : (
-        <LoadingIcons />
+        <IconLoading />
       )}
     </>
   );

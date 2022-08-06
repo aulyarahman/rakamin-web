@@ -1,14 +1,22 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ButtonClose, Buttons } from '../Button';
 import useConfirmationModalManagement from '../../hooks/useConfirmationModal.js';
 import { IconWarning } from '../Icon';
+import useConfirmationToastManagement from '../../hooks/useToastConfirm.js';
 
 export const ModalContent = ({ children, title = 'Create', isOpened, type }) => {
   const navigate = useNavigate();
+  const { isOpened: isOpenToast, status } = useConfirmationToastManagement();
   const handleClose = () => navigate('/', { replace: true });
   const open = type === 'page' ? true : isOpened;
+
+  useEffect(() => {
+    if (isOpenToast && status !== 'pending') {
+      handleClose();
+    }
+  }, [status]);
 
   return (
     <>

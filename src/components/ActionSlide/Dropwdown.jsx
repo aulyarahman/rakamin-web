@@ -20,15 +20,19 @@ const Dropdown = ({ list, label, onClick }) => {
         leaveTo="transform opacity-0 scale-95">
         <Menu.Items className="absolute w-max origin-top-right divide-y divide-gray-100 rounded-sm bg-white shadow-lg z-50">
           {list.map((i, k) => (
-            <div className="px-1 py-1" key={k}>
+            <div className="px-1 py-1  hover:bg-white" key={k}>
               <Menu.Item>
                 {({ active }) => (
                   <button
                     onClick={() => onClick(k)}
                     className={`${
-                      active ? 'bg-neutral-40 text-white' : 'text-gray-900'
-                    } group flex w-full items-center rounded-md px-2 py-2 text-[14px] font-bold w-[320px]  gap-5`}>
-                    <span>{i.icon}</span>
+                      active && k === 3
+                        ? 'text-red-600'
+                        : active && k < 3
+                        ? 'text-primary'
+                        : 'text-gray-800'
+                    } group flex w-full items-center rounded-md px-2 py-2 text-[14px] font-bold w-[320px] gap-5`}>
+                    {i.icon}
                     {i.val}
                   </button>
                 )}
