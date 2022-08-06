@@ -1,93 +1,96 @@
 import { Axios } from '../config/axios.config';
-import { useCallback, useEffect, useState } from 'react';
+import useConfirmationModalManagement from '../hooks/useConfirmationModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { confirmationToastActions } from '../store/slices/toastSlice.js';
+import { todosActions } from '../store/slices/todosSlice';
 import useConfirmationToastManagement from '../hooks/useToastConfirm.js';
-import useConfirmationModalManagement from '../hooks/useConfirmationModal.js';
 
-export const useTodo = (url) => {
+export const useTodos = () => {
   const { setStatus } = useConfirmationToastManagement();
   const { open } = useConfirmationModalManagement();
-  const [refetch, setRefetch] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const { data } = useSelector((i) => i.todos);
 
-  const create = async (data) => {
+  const create = async (params, req) => {
     try {
-      setIsLoading(true);
+      const toNum = Number(params);
       setStatus('pending', 'Loading..', true);
-      await Axios.post(url, data);
+      const result = await Axios.post(`/todos/${toNum}/items`, req);
+      const resData = result.data;
+      const findTodos = data.map((i) => {
+        if (i.id === toNum) {
+          return {
+            ...i,
+            items: [...i.items, resData]
+          };
+        }
+        return i;
+      });
+      dispatch(todosActions.addTodos(findTodos));
       setStatus('success', `Success Create Items`, true);
-      setRefetch(!refetch);
     } catch (error) {
       setStatus('error', error.response.data);
-      setError(error.response.data);
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const update = async (data) => {
+  const update = async ({ itemId, todoId }, req) => {
+    const toNumItemId = Number(itemId);
+    const toNumtodoId = Number(todoId);
     try {
-      setIsLoading(true);
       setStatus('pending', 'Loading..', true);
-      await Axios.patch(url, data);
+      await Axios.patch(`/todos/${toNumtodoId}/items/${toNumItemId}`, req);
+      const findsTodos = data.find((i) => i.id === toNumtodoId);
+      const updateItems = findsTodos.items.map((i) => {
+        if (i.id === toNumItemId) {
+          return {
+            ...i,
+            name: req.name,
+            progress_percentage: req.progress_percentage
+          };
+        }
+        return i;
+      });
+      const updates = data.map((i) => {
+        if (i.id === toNumtodoId) {
+          return {
+            ...i,
+            items: updateItems
+          };
+        }
+        return i;
+      });
+      dispatch(todosActions.addTodos(updates));
       setStatus('success', `Success Update Items`, true);
-      setRefetch(!refetch);
     } catch (error) {
       setStatus('error', error.response.data);
-      setError(error.response.data);
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const deleteTodos = async (params) => {
+  const deleteTodos = async (itemId, todoId) => {
+    const toNumItemId = Number(itemId);
+    const toNumtodoId = Number(todoId);
     const isConfirm = await open();
     if (isConfirm) {
       try {
-        setIsLoading(true);
         setStatus('pending', 'Loading..', true);
-        await Axios.delete(params);
+        await Axios.delete(`/todos/${toNumtodoId}/items/${toNumItemId}`);
+        const removeItems = data.map((i) => {
+          if (i.id === toNumtodoId) {
+            return i.items.filter((item) => item.id !== toNumItemId);
+          }
+          return i;
+        });
+        dispatch(todosActions.addTodos(removeItems));
         setStatus('success', `Success Delete Items`, true);
-        setRefetch(!refetch);
-      } catch (error) {
-        setStatus('error', error.response.data);
-        setError(error.response.data);
-      } finally {
-        setIsLoading(false);
+      } catch (e) {
+        setStatus('error', e.response.data);
+        console.error(e);
       }
     }
   };
 
-  const fetch = async () => {
-    try {
-      setLoading(true);
-      const resTodo = await Axios.get(url);
-      setData(resTodo.data);
-      return resTodo;
-    } catch (error) {
-      setError(error.response.data);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      await fetch();
-    })();
-  }, [url, refetch]);
-
   return {
-    data,
-    loading,
-    error,
-    create,
-    isLoading,
     deleteTodos,
-    update
+    update,
+    create
   };
 };
