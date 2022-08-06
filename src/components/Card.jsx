@@ -19,6 +19,5 @@ export const Card = ({ children, className, style }) => {
 
 Card.propTypes = {
   children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-  style: PropTypes.css
+  className: PropTypes.string
 };

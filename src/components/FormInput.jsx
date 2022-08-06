@@ -26,6 +26,6 @@ FormInput.propTypes = {
   type: PropTypes.string,
   placeholder: PropTypes.string,
   required: PropTypes.string,
-  onChange: PropTypes.onChange,
+  onChange: PropTypes.func,
   value: PropTypes.string
 };
