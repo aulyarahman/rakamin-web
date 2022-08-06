@@ -6,7 +6,6 @@ const TOKEN =
 
 export const Axios = axios.create({
   baseURL: BASE_URL,
-  // withCredentials: true,
   headers: {
     Accept: 'application/json',
     Authorization: TOKEN
