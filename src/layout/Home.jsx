@@ -1,44 +1,55 @@
 import { Card, Containers, Icons, Navbar, ProgressBar, Skeleton } from '../components/index.js';
-import React from 'react';
-import { useTodo } from '../services/useTodo.js';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Colors } from '../utils/Colors.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTodos } from '../store/slices/todosSlice';
+import { useTodos } from '../services/useTodo.js';
 
 const Loading = () => (
-  <Containers>
-    <Skeleton />
-  </Containers>
+  <>
+    <Navbar />
+    <Containers>
+      <Card>
+        <Skeleton />
+      </Card>
+    </Containers>
+  </>
 );
 
-const ItemsCard = ({ id }) => {
+const ItemsCard = ({ items }) => {
+  const refCardItems = useRef(null);
+  const { deleteTodos } = useTodos();
   const navigate = useNavigate();
-  const { data, loading, deleteTodos } = useTodo(`/todos/${id}/items`);
 
-  const handleDelete = (idItems) => {
-    return deleteTodos(`/todos/${id}/items/${idItems}`);
+  const handleDelete = (idItems, todosId) => {
+    return deleteTodos(idItems, todosId);
   };
 
-  if (loading) return <Loading />;
+  if (!items) return <p>Dont Have Any Items</p>;
 
   return (
     <>
-      {data.map((i) => {
+      {items.map((i, k) => {
         const percent = Number(i.progress_percentage);
         return (
           <div
-            key={i.id}
-            className={'bg-neutral border-[1px] rounded-[4px] p-3 space-y-3 cursor-pointer'}>
+            ref={refCardItems}
+            key={k}
+            draggable={true}
+            className={
+              'bg-neutral border-[1px] rounded-[4px] p-3 space-y-3 cursor-pointer transition duration-150 hover:transform hover:scale-[1.03] '
+            }>
             <p className={'font-bold text-[14px]'}>{i.name}</p>
             <div className="w-full border-[1px] border-dashed border-[#E0E0E0]" />
             <ProgressBar
               progress={percent}
-              href={`/items/add/${id}`}
+              href={`/items/add/${i.id}`}
               onClick={(k) => {
                 if (k === 2) {
                   localStorage.setItem('items', JSON.stringify(i));
-                  navigate(`/todos/${id}/items/${i.id}`);
+                  navigate(`/todos/${i.todo_id}/items/${i.id}`);
                 }
-                if (k === 3) handleDelete(i.id);
+                if (k === 3) handleDelete(i.id, i.todo_id);
               }}
             />
           </div>
@@ -50,7 +61,8 @@ const ItemsCard = ({ id }) => {
 
 const Home = () => {
   const navigate = useNavigate();
-  const { data, loading } = useTodo('/todos');
+  const { data, loading, error } = useSelector((item) => item.todos);
+  const dispatch = useDispatch();
   const colorData = [
     {
       bg: '#F8FBF9',
@@ -74,28 +86,24 @@ const Home = () => {
     }
   ];
 
-  const randColor = () => {
-    return (
-      '#' +
-      Math.floor(Math.random() * 16777215)
-        .toString(16)
-        .padStart(6, '0')
-        .toUpperCase()
-    );
-  };
+  useEffect(() => {
+    const control = new AbortController();
+    dispatch(fetchTodos());
+    return () => control.abort();
+  }, []);
 
+  if (error) return <p>{error}</p>;
   if (loading) return <Loading />;
 
   return (
     <>
       <Navbar />
       <Containers>
-        {data.map((i) => {
-          // const COLOR = ['#F7FEFF', '#FFFCF5', '#FFFAFA', 'F8FBF9'];
+        {data.map((i, k) => {
           const colors = Math.floor((Math.random() * colorData.length) | 0);
           return (
             <Card
-              key={i.id}
+              key={k}
               className={``}
               style={{
                 backgroundColor: colorData[colors].bg,
@@ -110,7 +118,7 @@ const Home = () => {
                 {i.title}
               </div>
               <p className="font-bold text-black text-sm">{i.description}</p>
-              <ItemsCard key={i.id} id={i.id} />
+              <ItemsCard key={i.id} items={i.items} />
               <div
                 className={'flex gap-2 cursor-pointer'}
                 onClick={() => navigate(`/items/add/${i.id}`)}>

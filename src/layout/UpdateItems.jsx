@@ -1,14 +1,14 @@
 import { FormInput } from '../components';
 import React, { useEffect, useState } from 'react';
 import WrapForm from './WrapForm';
-import { useTodo } from '../services/useTodo';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ModalContent } from '../components/ActionSlide/ModalContent';
+import { useTodos } from '../services/useTodo.js';
 
 const UpdateItems = () => {
   const { idTodos, idItems } = useParams();
   const [data, setData] = useState({ name: '', progress_percentage: '' });
-  const { update, isLoading } = useTodo(`/todos/${idTodos}/items/${idItems}`);
+  const { update, isLoading } = useTodos();
 
   useEffect(() => {
     const data = localStorage.getItem('items');
@@ -26,7 +26,7 @@ const UpdateItems = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await update(data);
+    await update({ itemId: idItems, todoId: idTodos }, data);
   };
 
   return (
