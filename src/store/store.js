@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import modalReducer from './slices/modalSlice';
 import toastReducer from './slices/toastSlice';
+import todosReducer from './slices/todosSlice';
 
 const thunkArguments = {};
 
@@ -14,7 +15,8 @@ export const store = configureStore({
   },
   reducer: {
     modal: modalReducer,
-    toast: toastReducer
+    toast: toastReducer,
+    todos: todosReducer
   }
 });
 
