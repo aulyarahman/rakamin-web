@@ -25,7 +25,7 @@ export const useTodos = () => {
         }
         return i;
       });
-      dispatch(todosActions.addTodos(findTodos));
+      dispatch(todosActions.setTodos(findTodos));
       setStatus('success', `Success Create Items`, true);
     } catch (error) {
       setStatus('error', error.response.data);
@@ -58,7 +58,7 @@ export const useTodos = () => {
         }
         return i;
       });
-      dispatch(todosActions.addTodos(updates));
+      dispatch(todosActions.setTodos(updates));
       setStatus('success', `Success Update Items`, true);
     } catch (error) {
       setStatus('error', error.response.data);
@@ -79,7 +79,7 @@ export const useTodos = () => {
           }
           return i;
         });
-        dispatch(todosActions.addTodos(removeItems));
+        dispatch(todosActions.setTodos(removeItems));
         setStatus('success', `Success Delete Items`, true);
       } catch (e) {
         setStatus('error', e.response.data);
@@ -88,9 +88,40 @@ export const useTodos = () => {
     }
   };
 
+  // 0 IS MEAN DECREASE AND 1 INCREASE THE INCREMENT
+  const moveTodos = async (req, key) => {
+    const operator = key === 0 ? Number(req.idx + 1) : key === 1 ? Number(req.idx - 1) : undefined;
+    const findTodos = data.map((i) => {
+      if (i.idx === operator) {
+        return {
+          ...i,
+          items: [...i.items, req]
+        };
+      }
+      if (i.idx === Number(req.idx)) {
+        return {
+          ...i,
+          items: i.items.filter((item) => item.id !== Number(req.id))
+        };
+      }
+      return i;
+    });
+    dispatch(todosActions.setTodos(findTodos));
+  };
+
   return {
     deleteTodos,
     update,
-    create
+    create,
+    moveTodos
   };
 };
+
+//itemIdx
+// id(pin):1442
+// name(pin):"Group Of Task 3"
+// done(pin):null
+// todo_id(pin):3
+// created_at(pin):"2022-08-06T02:26:14.348Z"
+// updated_at(pin):"2022-08-06T08:18:57.459Z"
+// progress_percentage(pin):90
