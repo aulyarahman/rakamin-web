@@ -15,10 +15,12 @@ export const fetchTodos = createAsyncThunk('todos', async (_, thunkAPI) => {
   try {
     const data = [];
     const response = await Axios.get('/todos');
-    await asyncForEach(response.data, async (it) => {
+    thunkAPI.dispatch(todosActions.setTodos(response.data));
+    await asyncForEach(response.data, async (it, idx) => {
       const resItems = await Axios.get(`/todos/${it.id}/items`);
       data.push({
         ...it,
+        idx,
         items: resItems.data
       });
     });
@@ -36,8 +38,11 @@ const todosSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    addTodos: (state, action) => {
+    setTodos: (state, action) => {
       state.data = action.payload;
+    },
+    setStatus: (state, action) => {
+      state.status = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -47,7 +52,6 @@ const todosSlice = createSlice({
     }),
       builder.addCase(fetchTodos.fulfilled, (state, action) => {
         state.data = action.payload;
-
         state.loading = false;
         state.status = 'success';
       });
