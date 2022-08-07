@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { useTodos } from '../services/useTodo.js';
+import { useTodos } from '~/services/useTodo';
 import { useNavigate } from 'react-router-dom';
-import { ProgressBar, Icons } from '../components';
+import { ProgressBar, Icons } from '~/components';
 
 const ItemsCard = ({ items, todoIdx }) => {
   const refCardItems = useRef(null);

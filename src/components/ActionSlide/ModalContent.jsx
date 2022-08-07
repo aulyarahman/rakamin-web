@@ -2,9 +2,9 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ButtonClose, Buttons } from '../Button';
-import useConfirmationModalManagement from '../../hooks/useConfirmationModal.js';
+import useConfirmationModalManagement from '~/hooks/useConfirmationModal';
 import { IconWarning } from '../Icon';
-import useConfirmationToastManagement from '../../hooks/useToastConfirm.js';
+import useConfirmationToastManagement from '~/hooks/useToastConfirm';
 
 export const ModalContent = ({ children, title = 'Create', isOpened, type }) => {
   const navigate = useNavigate();

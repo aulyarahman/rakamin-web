@@ -1,4 +1,4 @@
-import { Containers, Navbar } from '../components/index.js';
+import { Containers, Navbar } from '~/components';
 import React from 'react';
 
 const TodosCard = React.lazy(() => import('./TodosCard'));

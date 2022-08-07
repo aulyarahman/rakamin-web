@@ -1,9 +1,9 @@
-import { FormInput } from '../components';
+import { FormInput } from '~/components';
 import React, { useEffect, useState } from 'react';
 import WrapForm from './WrapForm';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ModalContent } from '../components/ActionSlide/ModalContent';
-import { useTodos } from '../services/useTodo.js';
+import { useParams } from 'react-router-dom';
+import { ModalContent } from '~/components/ActionSlide/ModalContent';
+import { useTodos } from '~/services/useTodo';
 
 const UpdateItems = () => {
   const { idTodos, idItems } = useParams();

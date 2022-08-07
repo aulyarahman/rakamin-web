@@ -1,10 +1,10 @@
-import { Card, Containers, Icons, Navbar, ProgressBar, Skeleton } from '../components/index.js';
+import { Card, Icons } from '~/components';
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTodos } from '../store/slices/todosSlice';
-import { colorData } from '../utils/Colors';
-import { LoadingSvg } from '../components/Icon';
+import { fetchTodos } from '~/store/slices/todosSlice';
+import { colorData } from '~/utils/Colors';
+import { LoadingSvg } from '~/components/Icon';
 
 const ItemsCard = React.lazy(() => import('./ItemsCard'));
 

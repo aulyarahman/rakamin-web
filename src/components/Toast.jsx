@@ -1,4 +1,4 @@
-import useConfirmationToastManagement from '../hooks/useToastConfirm.js';
+import useConfirmationToastManagement from '~/hooks/useToastConfirm';
 import { useEffect } from 'react';
 import { IconLoading } from './Icon';
 

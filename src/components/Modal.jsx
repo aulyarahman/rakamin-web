@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import useConfirmationModalManagement from '../hooks/useConfirmationModal.js';
+import useConfirmationModalManagement from '~/hooks/useConfirmationModal';
 import { ButtonClose, Buttons } from './Button';
 
 export const Modal = (props) => {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
-import CreateTodos from './layout/CreateTodos';
-import Home from './layout/Home';
-import CreateItems from './layout/CreateItems.jsx';
-import { ModalConfirmation } from './components/ActionSlide/ModalContent';
-import UpdateItems from './layout/UpdateItems.jsx';
+import CreateTodos from '~/layout/CreateTodos';
+import Home from '~/layout/Home';
+import CreateItems from '~/layout/CreateItems.jsx';
+import { ModalConfirmation } from '~/components/ActionSlide/ModalContent';
+import UpdateItems from '~/layout/UpdateItems';
 
 const App = () => {
   const location = useLocation();

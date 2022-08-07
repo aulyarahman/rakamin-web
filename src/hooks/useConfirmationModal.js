@@ -1,8 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  confirmationModalActions,
-  confirmationModalThunkActions
-} from '../store/slices/modalSlice';
+import { confirmationModalActions, confirmationModalThunkActions } from '~/store/slices/modalSlice';
 
 function useConfirmationModalManagement() {
   const dispatch = useDispatch();

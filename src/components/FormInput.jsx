@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types';
 
-export const FormInput = ({ label, id, type, placeholder, required, onChange, value }) => {
+export const FormInput = ({ label, id, type, placeholder, required, onChange, value, max }) => {
   return (
     <div>
       <label htmlFor={id} className="mb-2 block text-sm font-bold">
@@ -11,6 +11,7 @@ export const FormInput = ({ label, id, type, placeholder, required, onChange, va
         id={id}
         name={id}
         value={value}
+        max={max}
         className="block w-full rounded-sm border-2 border-gray-300 p-2.5 text-sm text-gray-900"
         placeholder={placeholder}
         required={required || false}
@@ -25,7 +26,8 @@ FormInput.propTypes = {
   label: PropTypes.string,
   type: PropTypes.string,
   placeholder: PropTypes.string,
-  required: PropTypes.string,
+  required: PropTypes.bool,
   onChange: PropTypes.func,
-  value: PropTypes.string
+  value: PropTypes.string,
+  max: PropTypes.string
 };

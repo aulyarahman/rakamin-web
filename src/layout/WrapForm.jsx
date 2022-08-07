@@ -1,4 +1,4 @@
-import { Buttons } from '../components/Button';
+import { Buttons } from '~/components/Button';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 

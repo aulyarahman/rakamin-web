@@ -1,8 +1,8 @@
-import { Axios } from '../config/axios.config';
-import useConfirmationModalManagement from '../hooks/useConfirmationModal';
+import { Axios } from '~/config/axios.config';
+import useConfirmationModalManagement from '~/hooks/useConfirmationModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { todosActions } from '../store/slices/todosSlice';
-import useConfirmationToastManagement from '../hooks/useToastConfirm.js';
+import { todosActions } from '~/store/slices/todosSlice';
+import useConfirmationToastManagement from '~/hooks/useToastConfirm.js';
 
 export const useTodos = () => {
   const { setStatus } = useConfirmationToastManagement();
@@ -88,7 +88,7 @@ export const useTodos = () => {
     }
   };
 
-  // 0 IS MEAN DECREASE AND 1 INCREASE THE INCREMENT
+  // 1 IS MEAN DECREASE AND 0 INCREASE THE INCREMENT
   const moveTodos = async (req, key) => {
     const operator = key === 0 ? Number(req.idx + 1) : key === 1 ? Number(req.idx - 1) : undefined;
     const findTodos = data.map((i) => {

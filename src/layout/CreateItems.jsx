@@ -1,9 +1,9 @@
-import { FormInput } from '../components';
+import { FormInput } from '~/components';
 import React, { useState } from 'react';
 import WrapForm from './WrapForm';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ModalContent } from '../components/ActionSlide/ModalContent';
-import { useTodos } from '../services/useTodo.js';
+import { useParams } from 'react-router-dom';
+import { ModalContent } from '~/components/ActionSlide/ModalContent';
+import { useTodos } from '~/services/useTodo';
 
 const CreateItems = () => {
   const { id } = useParams();
@@ -23,15 +23,19 @@ const CreateItems = () => {
     <ModalContent type={'page'} title={'Create Task'}>
       <WrapForm cb={handleSubmit}>
         <FormInput
+          required={true}
           label={'Task Name'}
           id={'name'}
           placeholder={'Type your Task'}
           onChange={handleChange}
         />
         <FormInput
+          required={true}
+          type={'number'}
           label={'Progress'}
           id={'progress_percentage'}
           placeholder={'70%'}
+          max={3}
           onChange={handleChange}
         />
       </WrapForm>

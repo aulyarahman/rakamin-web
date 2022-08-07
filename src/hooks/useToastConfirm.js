@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { confirmationToastActions, toastThunkActions } from '../store/slices/toastSlice';
+import { confirmationToastActions, toastThunkActions } from '~/store/slices/toastSlice';
 
 function useConfirmationToastManagement() {
   const dispatch = useDispatch();

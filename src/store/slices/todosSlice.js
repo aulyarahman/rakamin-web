@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Axios } from '../../config/axios.config.js';
-import { asyncForEach } from '../../config/async-foreach.js';
+import { Axios } from '~/config/axios.config.js';
+import { asyncForEach } from '~/config/async-foreach.js';
 
 // const loading = 'idle' | 'pending' | 'succeeded' | 'failed';
 
