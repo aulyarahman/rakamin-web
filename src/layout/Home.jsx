@@ -1,16 +1,15 @@
 import { Containers, Navbar } from '~/components';
 import React from 'react';
-
-const TodosCard = React.lazy(() => import('./TodosCard'));
+import TodosCard from './TodosCard';
 
 const Home = () => {
   return (
-    <React.Suspense fallback={<p>Loading Todos...</p>}>
+    <>
       <Navbar />
       <Containers>
         <TodosCard />
       </Containers>
-    </React.Suspense>
+    </>
   );
 };
 
