@@ -35,7 +35,6 @@ const CreateItems = () => {
           label={'Progress'}
           id={'progress_percentage'}
           placeholder={'70%'}
-          max={3}
           onChange={handleChange}
         />
       </WrapForm>
