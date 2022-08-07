@@ -7,12 +7,7 @@ import { useSelector } from 'react-redux';
 
 const ItemsCard = ({ items, todoIdx }) => {
   const { deleteTodos, moveTodos } = useTodos();
-  const { status } = useSelector((state) => state.todos);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log('change state');
-  }, [items]);
 
   const handleDelete = (idItems, todosId) => {
     return deleteTodos(idItems, todosId);
@@ -32,7 +27,6 @@ const ItemsCard = ({ items, todoIdx }) => {
   };
 
   if (!items) return <Icons.LoadingSvg />;
-  if (status === 'progress') return <p>Loading...</p>;
 
   return (
     <Droppable droppableId={`${todoIdx}`}>
@@ -55,7 +49,6 @@ const ItemsCard = ({ items, todoIdx }) => {
                     className={
                       'bg-neutral border-[1px] rounded-[4px] p-3 space-y-3 cursor-pointer '
                     }>
-                    {status}
                     <p className={'font-bold text-[14px]'}>{i.name}</p>
                     <div className="w-full border-[1px] border-dashed border-[#E0E0E0]" />
                     <ProgressBar
