@@ -1,29 +1,47 @@
 import { IconCheck, IconFiMore, IconLeft, IconPencil, IconRight, IconTrash } from './Icon';
-import React from 'react';
+import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import clsx from 'clsx';
 import Dropdown from './ActionSlide/Dropwdown';
+import { useSelector } from 'react-redux';
 
 const ListDropwDown = [
   {
+    id: 1,
     val: 'Move Right',
     icon: <IconRight />
   },
   {
-    val: 'Move Right',
+    id: 2,
+    val: 'Move Left',
     icon: <IconLeft />
   },
   {
+    id: 3,
     val: 'Edit',
     icon: <IconPencil />
   },
   {
+    id: 4,
     val: 'Delete',
     icon: <IconTrash />
   }
 ];
 
-export const ProgressBar = ({ progress, onClick }) => {
+export const ProgressBar = ({ progress, onClick, todoIdx }) => {
+  const [list, setList] = useState(ListDropwDown);
+  const { data } = useSelector((i) => i.todos);
+
+  const chekcLastItem = () => {
+    if (data[data.length - 1].idx === todoIdx) {
+      return list.filter((i) => i.id !== 1);
+    }
+    if (data[0].idx === todoIdx) {
+      return list.filter((i) => i.id !== 2);
+    }
+    return list;
+  };
+
   return (
     <div className="flex gap-5 place-items-center">
       <div className={'flex w-full gap-2'}>
@@ -44,7 +62,7 @@ export const ProgressBar = ({ progress, onClick }) => {
           </div>
         )}
       </div>
-      <Dropdown label={<IconFiMore />} list={ListDropwDown} onClick={(k) => onClick(k)} />
+      <Dropdown label={<IconFiMore />} list={chekcLastItem()} onClick={(k) => onClick(k)} />
     </div>
   );
 };

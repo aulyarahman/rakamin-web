@@ -18,7 +18,8 @@ const Dropdown = ({ list, label, onClick }) => {
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95">
-        <Menu.Items className="absolute w-max origin-top-right divide-y divide-gray-100 rounded-sm bg-white shadow-lg z-100">
+        <Menu.Items
+          className={` left-5 transform -translate-x-full absolute w-max origin-top-right divide-y divide-gray-100 rounded-sm bg-white shadow-lg z-100`}>
           {list.map((i, k) => (
             <div className="px-1 py-1  hover:bg-white" key={k}>
               <Menu.Item>

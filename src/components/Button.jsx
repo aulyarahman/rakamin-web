@@ -14,21 +14,14 @@ export const Button = (props) => {
   );
 };
 
-export const Buttons = ({
-  type = 'button',
-  children,
-  className,
-  onClick,
-  variant = 'filled',
-  isLoading = false
-}) => (
+export const Buttons = ({ type = 'button', children, className, onClick, variant = 'filled' }) => (
   <button
     type={type}
     onClick={onClick}
     className={clsx(
-      'inline-flex text-[14px] hover:bg-gray-200 border-[1.5px] focus:ring-4 focus:outline-none',
+      'inline-flex text-[14px] hover:bg-gray-200 border-[1.5px] focus:ring-4 focus:outline-none ',
       'font-medium rounded-[8px] text-center px-[8px] py-[2px]',
-      'min-w-[97px] h-[32px] place-items-center',
+      'h-[32px] place-items-center',
       `${
         variant === 'filled'
           ? 'text-white bg-primary hover:text-black border-none'
@@ -36,7 +29,6 @@ export const Buttons = ({
       }`,
       className
     )}>
-    {isLoading && <IconLoading />}
     {children}
   </button>
 );
