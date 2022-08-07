@@ -4,12 +4,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { todosActions } from '~/store/slices/todosSlice';
 import useConfirmationToastManagement from '~/hooks/useToastConfirm.js';
 
+/**
+ * CUSTOM HOOK FOR ACTION TODOS
+ * @returns {create, update, deleteTodos, moveTodos, moveTodosDraggable}
+ */
 export const useTodos = () => {
   const { setStatus } = useConfirmationToastManagement();
   const { open } = useConfirmationModalManagement();
   const dispatch = useDispatch();
   const { data } = useSelector((i) => i.todos);
 
+  /**
+   * CREATE ITEMS
+   * @param params,req
+   * @returns {Promise<void>}
+   */
   const create = async (params, req) => {
     try {
       const toNum = Number(params);
@@ -32,9 +41,19 @@ export const useTodos = () => {
     }
   };
 
+  /**
+   * UPDATE ITEMS
+   * @param {req, itemId, todoId}
+   * @returns {Promise<void>}
+   */
   const update = async ({ itemId, todoId }, req) => {
     const toNumItemId = Number(itemId);
     const toNumtodoId = Number(todoId);
+    const reqData = {
+      target_todo_id: todoId,
+      name: req.name,
+      progress_percentage: req.progress_percentage
+    };
     try {
       setStatus('pending', 'Loading..', true);
       await Axios.patch(`/todos/${toNumtodoId}/items/${toNumItemId}`, req);
@@ -43,8 +62,7 @@ export const useTodos = () => {
         if (i.id === toNumItemId) {
           return {
             ...i,
-            name: req.name,
-            progress_percentage: req.progress_percentage
+            ...reqData
           };
         }
         return i;
@@ -65,6 +83,11 @@ export const useTodos = () => {
     }
   };
 
+  /**
+   * DELETE ITEMS
+   * @param itemId ,todoId
+   * @returns {Promise<void>}
+   */
   const deleteTodos = async (itemId, todoId) => {
     const toNumItemId = Number(itemId);
     const toNumtodoId = Number(todoId);
@@ -75,7 +98,10 @@ export const useTodos = () => {
         await Axios.delete(`/todos/${toNumtodoId}/items/${toNumItemId}`);
         const removeItems = data.map((i) => {
           if (i.id === toNumtodoId) {
-            return i.items.filter((item) => item.id !== toNumItemId);
+            return {
+              ...i,
+              items: i.items.filter((item) => item.id !== toNumItemId)
+            };
           }
           return i;
         });
@@ -88,24 +114,64 @@ export const useTodos = () => {
     }
   };
 
-  // 1 IS MEAN DECREASE AND 0 INCREASE THE INCREMENT
-  const moveTodos = async (req, key) => {
-    const operator = key === 0 ? Number(req.idx + 1) : key === 1 ? Number(req.idx - 1) : undefined;
-    const findTodos = data.map((i) => {
-      if (i.idx === operator) {
+  /**
+   * REUSE FUNCTION FOR MOVING ITEMS TODOS
+   * @param args
+   * @returns {Promise<*>}
+   */
+  const moveTask = async (args) => {
+    const todoFrom = args.req.todo_id;
+    const todoDest = data[args.dest];
+    const reqData = {
+      name: args.req.name,
+      progress_percentage: args.req.progress_percentage
+    };
+    const create = await Axios.post(`/todos/${todoDest.id}/items`, reqData);
+    Axios.delete(`/todos/${todoFrom}/items/${args.req.id}`);
+
+    const patch = data.map((i) => {
+      if (i.idx === args.dest) {
         return {
           ...i,
-          items: [...i.items, req]
+          items: [...i.items, create?.data]
         };
       }
-      if (i.idx === Number(req.idx)) {
+      if (i.idx === args.source) {
         return {
           ...i,
-          items: i.items.filter((item) => item.id !== Number(req.id))
+          items: i.items.filter((item) => item.id !== Number(args.req.id))
         };
       }
       return i;
     });
+
+    return patch;
+  };
+
+  /**
+   * 1 IS MEAN DECREASE AND 0 INCREASE THE INCREMENT
+   * MOVING TOODS WITH BUTTON DROP DOWN
+   * @param {req, key}
+   * @returns {Promise<void>}
+   */
+  const moveTodos = async (req, key) => {
+    const operator = key === 0 ? Number(req.idx + 1) : key === 1 ? Number(req.idx - 1) : undefined;
+    const findTodos = await moveTask({ dest: operator, source: Number(req.idx), req });
+    dispatch(todosActions.setTodos(findTodos));
+  };
+
+  /**
+   * MOVING TODOS WITH DRAGGABLE
+   * @param req
+   * @returns {Promise<void>}
+   */
+  const moveTodosDraggable = async (req) => {
+    const findTodos = await moveTask({
+      dest: req.idTodoDestination,
+      source: req.idTodoFrom,
+      req: req.items
+    });
+
     dispatch(todosActions.setTodos(findTodos));
   };
 
@@ -113,11 +179,12 @@ export const useTodos = () => {
     deleteTodos,
     update,
     create,
-    moveTodos
+    moveTodos,
+    moveTodosDraggable
   };
 };
 
-//itemIdx
+// itemIdx
 // id(pin):1442
 // name(pin):"Group Of Task 3"
 // done(pin):null
