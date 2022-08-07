@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTodos } from '~/services/useTodo';
 import { useNavigate } from 'react-router-dom';
 import { ProgressBar, Icons } from '~/components';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 
 const ItemsCard = ({ items, todoIdx }) => {
   const { deleteTodos, moveTodos } = useTodos();
