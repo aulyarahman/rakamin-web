@@ -47,7 +47,7 @@ export const ProgressBar = ({ progress, onClick, todoIdx }) => {
       <div className={'flex w-full gap-2'}>
         <div className="w-full bg-gray-200 rounded-full h-[16px]">
           <div
-            style={{ width: progress + '%' }}
+            style={{ maxWidth: progress + '%' }}
             className={clsx(
               `${progress < 100 ? 'bg-primary' : 'bg-success'}`,
               'h-[16px] rounded-full'
