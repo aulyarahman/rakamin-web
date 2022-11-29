@@ -1,4 +1,4 @@
-### URL = https://rakamin-mini-project-beta.vercel.app/v1/
+### URL = https://todo-list-gamma-indol.vercel.app/
 
 ````
 DEPENCDY USING 
